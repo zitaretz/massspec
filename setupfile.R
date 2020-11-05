@@ -9,7 +9,12 @@ install.packages("readxl")
 # install.packages("devtools")
 devtools::install_github("tidyverse/readxl")
 #test to pull to githup 
-
+library(tidyverse)
+library(readxl)
+library(dplyr)
+library(purrr)
+library(stringr)
+library(readxl)
 suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(broom))
 suppressPackageStartupMessages(library(readxl))
