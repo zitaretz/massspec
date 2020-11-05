@@ -1,4 +1,29 @@
+---
+title: "MS"
+author: "Zita"
+date: "11/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This will try to analyze MS data with R studio 
+
+```{r setup, include = FALSE, echo=FALSE, warning=FALSE}
+# Read libaries and functions --------------------------------------------------------------------
+
+knitr::opts_chunk$set(echo = FALSE,  message=FALSE, warning = FALSE)
+
 source('excel.R')
+#source("functions.R")
+#source('~/Documents/Code/R/theme.R')
+```
+
+```{r}
 # Read data in from excel files =========
 
 # Change to YOUR path to Dropbox
@@ -15,7 +40,7 @@ fl <- paste0(data_dir_,fl)
 
 
 r_sheet <-  function(files_path){
-  files_path %>% excel_sheets() %>% purrr::set_names()  %>% map_df(read_excel, path = files_path, .id = "sheet")
+   files_path %>% excel_sheets() %>% purrr::set_names()  %>% map_df(read_excel, path = files_path, .id = "sheet")
 }
 
 df <-  fl %>%  map( ~ r_sheet(.)) %>%  bind_rows()
@@ -31,3 +56,19 @@ df <- df %>%  mutate(polymer = str_extract(sheet, "^[:alnum:]+"), condition = st
 df$conc <- as.numeric(df$conc)
 #%>%  select(spolymer, condition, mol, ph, treatment, run, time, abs)
 df <- df %>% mutate(P = as.double(str_extract(polymer, "(?<=P)\\d+")), Q = as.double(str_extract(polymer, "(?<=Q)\\d+")))
+
+#head(df)
+
+write_csv(df, paste0(analysis_dir_, "aggregate_data.csv"))
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
